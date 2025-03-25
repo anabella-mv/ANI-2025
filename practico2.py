@@ -87,6 +87,9 @@ while v!=0:
             else:
                 w=0
     elif v==3:
+        print("proximamenteeeeeeeee")
+    elif v==0:
+        print("chauuuuuu")
         
             
 
