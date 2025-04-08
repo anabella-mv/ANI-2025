@@ -49,6 +49,31 @@ def funcion_2a(x):
 def funcion_2b(x):
     return ((x**2)-3)
 
+#Punto 3
+#Metodo de Newton
+def funcion_3b(x,a):
+    f=(x**3)-a
+    df=3*(x**2)
+    return f,df
+def rnewton(fun,x0,err,mit):
+    hx=[]
+    hf=[]
+    f,df=fun(x0,a)
+    if df==0:
+        print("la derivada es nula en ese punto, no se puede continuar con el metodo de newton")
+    for i in range(mit):
+        hx.append(x0)
+        xn=x0-(f/df)
+        hf.append(f)
+        f,df=fun(xn,a)
+
+        if (abs(xn-x0)/abs(xn))<err or abs(f)<err:
+           print("Se encontraron las condiciones menores al error solicitado")
+           print(f"La raiz es {xn} y tiene un valor de {f}")
+           break
+        x0=xn
+    return hx,hf
+    
 v=1
 while v!=0:
 
@@ -58,7 +83,7 @@ while v!=0:
     v=int(input("Seleccione un punto:"))
 
     if v==1:
-        print("ESapreciable en el código el desarrollo de 1")
+        print("Es apreciable en el código el desarrollo de 1")
 
     elif v==2:
         w=1
@@ -87,11 +112,16 @@ while v!=0:
             else:
                 w=0
     elif v==3:
-        print("proximamenteeeeeeeee")
+        print("Se aprecia en el código")
+    elif v==4:
+        print("Se solicita un a mayor a 0")
+        a=-1
+        while a<0:
+            a=float(input("Ingrese el valor de a:"))
+        err=10**(-6)
+
+        hx,hf=rnewton(funcion_3b,2.,err,100)
+    elif v==5:
+        print("Se aprecia en el código")
     elif v==0:
         print("chauuuuuu")
-        
-            
-
-
-
