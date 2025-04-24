@@ -29,67 +29,81 @@ def graficar_seno():
 
 #Punto 3:
 
-#Funciones necesarias y la derivada
-def fun(x):
-    fx=x
-    return fx
+#Funcion necesaria de la derivada
 def dfun(x):
-    dfun=x
-    return dfun
+    b=0
+    #creo un condicional recursivo que calcule y sume los tèrminos
+    for i in range(5):
+        y=(((-1)**i)*(x**(2*i)))/(math.factorial(2*i))
+        b=b+y
+    return b
 
 #Metodo de newton y secante:
 
 def rsecante(fun,x0,x1,err,mit):
     hx=[]
     hy=[]
-    hx.append(x0)
-    hx.append(x1)
+    
+    #Obtengo los primeros f necesarios para la ejecucion
+    
     fx0=fun(x0)
     fx1=fun(x1)
-    hy.append(fx0)
-    hy.append(fx1)
+    
     #Que se repita hasta las iteraciones pedidas
     for i in range(mit):
-       #guardo los valores
        
-       #hx.append(x1)
-       fx0=fun(x0)
-       fx1=fun(x1)
        if (fx1-fx0)==0:
            print("no puedo realizar el metodo por problemas en el denominador")
            break
        
+       #Hago la iteracion
+       
        xn=x1-((fx1*(x1-x0))/(fx1-fx0))
+       
        x0=x1
        x1=xn
-       fxn=fun(xn)
+       
+       #Evaluo y guardo los valores obtenidos en la it.
+       fxn=fun(x1)
        hx.append(x1)
        hy.append(fx1)
 
        if abs(fxn)<err:
            print("Se encontraron las condiciones menores al error solicitado")
            break
+       
+       fx0=fun(x0)
+       fx1=fun(x1)
+       
     return hx,hy
 
 def rnewton(fun,x0,err,mit):
     hx=[]
     hf=[]
-  
+    
+    f=fun(x0)
+    df=dfun(x0)
     for i in range(mit):
-       f=fun(x0)
-       df=dfun(x0)
+       
        if df==0:
            print("la derivada es nula en ese punto, no se puede continuar con el metodo de newton")
            break
+       
+       #Iteracion
        xn=x0-(f/df)
-       x0=xn
-       hx.append(x0)
+       
+       f=fun(xn)
+       df=dfun(xn)
+       
+       hx.append(xn)
        hf.append(f)
 
 
        if abs(x0-xn)/abs(x0)<err or abs(f)<err:
            print("Se encontraron las condiciones menores al error solicitado")
            break
+       
+       x0=xn
     return hx,hf
 
 
@@ -98,7 +112,7 @@ def busqueda_ceros(fun,x0,x1,err,mit):
     hxn,hyn=rnewton(fun,x0,err,mit)
     hxs,hys=rsecante(fun,x0,x1,err,mit)
     
-    it_secante=(len(hys))-1 #Pues los primeros dos valores corresponden a una sola iteracion
+    it_secante=(len(hys)) #Trabajo con el tamaño de la lista
     raiz_secante=hxs[-1] #EL ultimo valor guardado es mi raiz
 
     print("iteraciones de la secante: ",it_secante," raiz dada por la secante: ", raiz_secante)
@@ -120,8 +134,9 @@ def busqueda_ceros(fun,x0,x1,err,mit):
 def main():
 
     v=1
+    #Los puntos 3 y 4 se ven apreciados en la ejecución del punto 5
     print("Seleccione el punto a ejecutar")
-    print("Hay puntos del 1 al 5, presione 0 para terminar el programa")
+    print("Hay puntos 1,2 y 5, presione 0 para terminar el programa")
     v=int(input("Seleccione un punto:"))
 
     while v!=0:
@@ -132,25 +147,13 @@ def main():
         if v==2:
             #Creo dos listas que van a hacer de puntos en el eje x,y, ademas de un contador para que recorra
             graficar_seno
-        if v==3:
-            print("Es un punto apreciable en el codigo")
-            print("Al no tener valores ni funcion especifica, el punto no se ve desarrollado al ejecutarlo")
-            #x0=1
-            #x1=2
-            #err=10**-5
-            #mit=100
-            #hx,hy=rsecante(fun,x0,x1,err,mit)
-        if v==4:
-            print("Es un punto apreciable en el codigo")
-            print("Al no tener valores ni funcion especifica, el punto no se ve desarrollado al ejecutarlo")
-            # los valores deben ser ingresados con anterioridad
-            x0=1
-            x1=2
-            err=10**-4
-            mit=100
-            print("La raiz que encuentra el mejor 0 es: ", busqueda_ceros(fun,x0,x1,err,mit))
         if v==5:
-            print("Es un punto apreciable en el codigo")
+            print("En este punto se aprecia la ejecución de los puntos 3 y 4 del parcial")
+            x0=3
+            x1=6
+            err=10**-5
+            mit=100
+            busqueda_ceros(serie_seno,x0,x1,err,mit)
 
 
 main()
