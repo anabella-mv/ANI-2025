@@ -154,6 +154,8 @@ def main():
             err=10**-5
             mit=100
             busqueda_ceros(serie_seno,x0,x1,err,mit)
+        else:
+            print("Elija otra opcion")
 
 
 main()
