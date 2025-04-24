@@ -1,4 +1,5 @@
-#Creo menu para la ejecucuion del parcial: basta con elegir el punto a desarrollar
+#Creo menu para la ejecucuion del parcial: 
+# basta con elegir el punto a desarrollar
 
 #Llamo las librerias que creo necesarias
 import matplotlib.pyplot as plt
@@ -86,7 +87,7 @@ def rnewton(fun,x0,err,mit):
     for i in range(mit):
        
        if df==0:
-           print("la derivada es nula en ese punto, no se puede continuar con el metodo de newton")
+           print("la derivada es nula, no se puede continuar con el metodo de newton")
            break
        
        #Iteracion
@@ -134,28 +135,35 @@ def busqueda_ceros(fun,x0,x1,err,mit):
 def main():
 
     v=1
-    #Los puntos 3 y 4 se ven apreciados en la ejecución del punto 5
-    print("Seleccione el punto a ejecutar")
-    print("Hay puntos 1,2 y 5, presione 0 para terminar el programa")
-    v=int(input("Seleccione un punto:"))
-
+    
     while v!=0:
+        #Los puntos 3 y 4 se ven apreciados en la ejecución del punto 5
+        print("Seleccione el punto a ejecutar")
+        print("Hay puntos 1,2 y 5, presione 0 para terminar el programa")
+        v=int(input("Seleccione un punto:"))
+
         if v==1:
-            #Pide un valor al usuario para poder ingresar a la funcion que ejecute la serie seno
+            #Pide un valor al usuario para poder ingresar 
+            # a la funcion que ejecute la serie seno
             a=float(input("Ingrese el valor de x para obtener el polinomio: "))
             print(serie_seno(a))
         if v==2:
-            #Creo dos listas que van a hacer de puntos en el eje x,y, ademas de un contador para que recorra
+            #Creo dos listas que van a hacer de puntos en el eje x,y, 
+            # ademas de un contador para que recorra
             graficar_seno
         if v==5:
-            print("En este punto se aprecia la ejecución de los puntos 3 y 4 del parcial")
+            print("En este punto se aprecia la ejecución de los puntos 3 y 4")
             x0=3
             x1=6
             err=10**-5
             mit=100
-            busqueda_ceros(serie_seno,x0,x1,err,mit)
+            menor_raiz=busqueda_ceros(serie_seno,x0,x1,err,mit)
+            print("La menor raiz dada por estos metodos es ", menor_raiz)
+        if v==0:
+            break
         else:
-            print("Elija otra opcion")
+            print("Elija una opcion valida")
+            v=9
 
 
 main()
