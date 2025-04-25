@@ -147,11 +147,11 @@ def main():
             # a la funcion que ejecute la serie seno
             a=float(input("Ingrese el valor de x para obtener el polinomio: "))
             print(serie_seno(a))
-        if v==2:
+        elif v==2:
             #Creo dos listas que van a hacer de puntos en el eje x,y, 
             # ademas de un contador para que recorra
-            graficar_seno
-        if v==5:
+            graficar_seno()
+        elif v==5:
             print("En este punto se aprecia la ejecución de los puntos 3 y 4")
             x0=3
             x1=6
@@ -159,7 +159,7 @@ def main():
             mit=100
             menor_raiz=busqueda_ceros(serie_seno,x0,x1,err,mit)
             print("La menor raiz dada por estos metodos es ", menor_raiz)
-        if v==0:
+        elif v==0:
             break
         else:
             print("Elija una opcion valida")
