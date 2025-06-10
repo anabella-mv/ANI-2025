@@ -116,19 +116,20 @@ def aprox_cuadmin(x,coeficientes):
     return cuadmin
 
 def punto2():
+    integrales,inte=punto1()
     #Matriz A del sist. a resolver
     A = np.zeros([3,3])
     for i in range(3):
         for j in range(3):
             a=j+i
-            A[i,j]=punto1()[a]
+            A[i,j]=integrales[a]
     print(A)
 
     #Matriz B del sist. a resolver
-    integrales,int=punto1()
+    
     B=[]
     for b in range(3):
-        B.append(int[b])
+        B.append(inte[b])
     print(B)
     coeficientes=solLU(A,B)
     return coeficientes
@@ -160,7 +161,7 @@ def main():
 
         if punto==1:
 
-            integralesp1,int=punto1()
+            integralesp1,defe=punto1()
             print(integralesp1)
 
         if punto==2:
