@@ -61,6 +61,8 @@ def funciones(x):
         fx=np.sin(x)*(x**a)
         f.append(fx)
     return f
+
+
 def polinomios(x):
     p=[]
     for a in range(5):
@@ -122,7 +124,7 @@ def punto2():
     print(A)
 
     #Matriz B del sist. a resolver
-    int=punto1[1]
+    integrales,int=punto1
     B=[]
     for b in range(3):
         B.append(int[b])
@@ -157,7 +159,7 @@ def main():
 
         if punto==1:
 
-            integralesp1=punto1[0]
+            integralesp1,int=punto1
             print(integralesp1)
 
         if punto==2:
