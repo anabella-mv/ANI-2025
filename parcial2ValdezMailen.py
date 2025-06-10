@@ -1,0 +1,196 @@
+#Cito librerias necesarias
+
+import matplotlib.pyplot as plt
+import numpy as np
+import math
+from scipy.interpolate import interp1d
+from scipy import linalg
+
+#punto 1: aproximación: Cuadrados minimos
+
+def intenumcomp(fun, a, b, N, regla):
+    h = (b - a)/N
+    vector_x = np.linspace(a, b, N+1)
+
+    if regla == "trapecio":
+        suma = fun(a) + fun(b)
+        for k in range(1, N):
+            suma += 2 * fun(vector_x[k])
+        return (h/2) * suma
+
+    elif regla == "simpson":
+        if N/2 != 0:
+            raise ValueError("Para la regla de Simpson, N debe ser par")
+        suma = fun(a) + fun(b)
+        for k in range(1, N):
+            if k % 2 == 0:
+                suma += 2 * fun(vector_x[k])
+            else:
+                suma += 4 * fun(vector_x[k])
+        return (h/3) * suma
+
+    elif regla == "pm":
+        suma = 0
+        for k in range(N):
+            punto_medio = (vector_x[k] + vector_x[k+1]) / 2
+            suma += fun(punto_medio)
+        return h * suma
+
+    else:
+        raise ValueError(f"{regla} usar 'trapecio', 'simpson' o 'pm'")
+
+
+#implemento una funcion para conseguir minimizar el error hasta la cota dada
+
+def interr(fun,a,b,tol,real):
+    N = 2
+    while abs(intenumcomp(fun,a,b,N,'simpson')-real) >= tol:
+        N += 2
+
+        if N ==1000:
+            print('no se llego al minimo de la tolerancia')
+            break
+
+    return N, intenumcomp(fun,a,b,N,'simpson')
+
+#defino las funciones a integrar para el ajuste cuadratico por cuadrados minimos
+
+def funciones(x):
+    f=[]
+    for a in range(3):
+        fx=np.sin(x)*(x**a)
+        f.append(fx)
+    return f
+def polinomios(x):
+    p=[]
+    for a in range(5):
+        px=x**a
+    return p
+
+def punto1():
+    f=funciones
+    #defino los valores de las integrales
+    inte=[]
+    for i in range (2):
+
+        int = interr(f[i],0,np.pi/2,10e-5,1)[1]
+        inte.append(int)
+        print(int)
+
+    int2 = interr(f[2],0,np.pi/2,10e-5,np.pi-2)[1]
+    inte.append(int2)
+    print(int2)
+
+    # integrales de los polinomios
+
+    p=polinomios
+    integrales=[]
+
+    for i in range(4):
+
+        intpol= intenumcomp(p[i],0,np.pi/2,2,'simpson')
+        integrales.append(intpol)
+
+    intpol4 = interr(p[4],0,np.pi/2,10e-5,np.pi**5/(5*2**5))[1]
+    integrales.append(intpol4)
+
+    print(integrales)
+    return integrales, inte
+
+#Para el punto 2 necesito linalg para realizar la descompcision y resolver las ecuaciones del sistema
+
+def solLU(A,B):
+    P,L,U = linalg.lu(A)
+    pb = P @ B
+    y_sol = linalg.solve_triangular(L,pb,lower=True)
+    coeficientes = linalg.solve_triangular(U,y_sol)
+    return coeficientes
+
+#defino el polinomio cuadratico con los coeficientes
+def aprox_cuadmin(x,coeficientes):
+
+    cuadmin = coeficientes[0] + coeficientes[1]*x + coeficientes[2]*x**2
+
+    return cuadmin
+
+def punto2():
+    #Matriz A del sist. a resolver
+    A = np.zeros([3,3])
+    for i in range(3):
+        for j in range(3):
+            a=j+i
+            A[i,j]=punto1[a]
+    print(A)
+
+    #Matriz B del sist. a resolver
+    int=punto1[1]
+    B=[]
+    for b in range(3):
+        B.append(int[b])
+    print(B)
+    coeficientes=solLU(A,B)
+    return coeficientes
+
+def punto3():
+    fun=funciones
+
+    #defino los puntos equiespaciados y les atribuyo un valor en la funcion
+    nodos = np.linspace(0,np.pi/2,5)
+    print(nodos)
+    y = fun[0](nodos)
+    print(y)
+
+    #defino el spline cubico
+    spline_3 = interp1d(nodos,y,'cubic')
+    x = np.linspace(0,np.pi/2,50)
+    pol = spline_3(x)
+
+    return pol
+
+
+#Menú principal para la ejecución del programa
+def main():
+    punto=1
+    while punto!=0:
+        print("Elija el ejercicio a desarrollar:")
+        print("Los puntos a ejecutar son 1, 2 y 3, el 0 es para terminar el programa")
+        punto=int(input("Seleccione el punto a desarrollar: "))
+
+        if punto==1:
+
+            integralesp1=punto1[0]
+            print(integralesp1)
+
+        if punto==2:
+
+            coeficientes=punto2
+            print("Estos son los coeficientes:")
+            print(coeficientes)
+
+            #En las funciones defino el polinomio cuadratico con estos coeficientes obtenidos
+
+        if punto==3:
+
+            pol=punto3
+            print(pol)
+
+        if punto==4:
+
+            plt.style.use('seaborn-v0_8')
+            plt.title('Comparacion de las aproximaciones con la funcion original', fontsize=14, pad=20)
+            plt.xlabel('x', fontsize=12)
+            plt.ylabel('y', fontsize=12)
+
+            #llamo a los puntos anteriores para el desarrollo del grafico
+            x = np.linspace(0,np.pi/2,50)
+            pol=punto3
+            fun=funciones
+            coef=punto2
+            plt.plot(x,pol,'.r')
+            plt.plot(x,fun[0](x),'-g')
+            plt.plot(x,aprox_cuadmin(x,coef),'.y')
+
+
+main()
+
+
