@@ -90,10 +90,10 @@ def punto1():
 
     for i in range(4):
 
-        intpol= intenumcomp(polinomio,i,0,np.pi/2,2,'simpson')
+        intpol= intenumcomp(polinomios,i,0,np.pi/2,2,'simpson')
         integrales.append(intpol)
 
-    intpol4 = interr(polinomio,i,0,np.pi/2,10e-5,np.pi**5/(5*2**5))[1]
+    intpol4 = interr(polinomios,i,0,np.pi/2,10e-5,np.pi**5/(5*2**5))[1]
     integrales.append(intpol4)
 
     print(integrales)
