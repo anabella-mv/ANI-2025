@@ -120,11 +120,11 @@ def punto2():
     for i in range(3):
         for j in range(3):
             a=j+i
-            A[i,j]=punto1[a]
+            A[i,j]=punto1()[a]
     print(A)
 
     #Matriz B del sist. a resolver
-    integrales,int=punto1
+    integrales,int=punto1()
     B=[]
     for b in range(3):
         B.append(int[b])
@@ -159,12 +159,12 @@ def main():
 
         if punto==1:
 
-            integralesp1,int=punto1
+            integralesp1,int=punto1()
             print(integralesp1)
 
         if punto==2:
 
-            coeficientes=punto2
+            coeficientes=punto2()
             print("Estos son los coeficientes:")
             print(coeficientes)
 
@@ -172,7 +172,7 @@ def main():
 
         if punto==3:
 
-            pol=punto3
+            pol=punto3()
             print(pol)
 
         if punto==4:
@@ -184,8 +184,8 @@ def main():
 
             #llamo a los puntos anteriores para el desarrollo del grafico
             x = np.linspace(0,np.pi/2,50)
-            pol=punto3
-            coef=punto2
+            pol=punto3()
+            coef=punto2()
             plt.plot(x,pol,'.r')
             plt.plot(x,funciones(x)[0],'-g')
             plt.plot(x,aprox_cuadmin(x,coef),'.y')
