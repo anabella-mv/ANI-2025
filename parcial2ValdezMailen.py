@@ -67,6 +67,7 @@ def polinomios(x):
     p=[]
     for a in range(5):
         px=x**a
+        p.append(px)
     return p
 
 def punto1():
