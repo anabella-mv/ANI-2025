@@ -19,7 +19,7 @@ def intenumcomp(fun, i, a, b, N, regla):
         return (h/2) * suma
 
     elif regla == "simpson":
-        if N/2 != 0:
+        if N % 2 != 0:
             raise ValueError("Para la regla de Simpson, N debe ser par")
         suma = fun(a)[i] + fun(b)[i]
         for k in range(1, N):
