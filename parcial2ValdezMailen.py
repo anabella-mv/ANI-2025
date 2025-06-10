@@ -8,32 +8,32 @@ from scipy import linalg
 
 #punto 1: aproximación: Cuadrados minimos
 
-def intenumcomp(fun, a, b, N, regla):
+def intenumcomp(fun, i, a, b, N, regla):
     h = (b - a)/N
     vector_x = np.linspace(a, b, N+1)
 
     if regla == "trapecio":
-        suma = fun(a) + fun(b)
+        suma = fun(a)[i] + fun(b)[i]
         for k in range(1, N):
-            suma += 2 * fun(vector_x[k])
+            suma += 2 * fun(vector_x[k])[i]
         return (h/2) * suma
 
     elif regla == "simpson":
         if N/2 != 0:
             raise ValueError("Para la regla de Simpson, N debe ser par")
-        suma = fun(a) + fun(b)
+        suma = fun(a)[i] + fun(b)[i]
         for k in range(1, N):
             if k % 2 == 0:
-                suma += 2 * fun(vector_x[k])
+                suma += 2 * fun(vector_x[k])[i]
             else:
-                suma += 4 * fun(vector_x[k])
+                suma += 4 * fun(vector_x[k])[i]
         return (h/3) * suma
 
     elif regla == "pm":
         suma = 0
         for k in range(N):
             punto_medio = (vector_x[k] + vector_x[k+1]) / 2
-            suma += fun(punto_medio)
+            suma += fun(punto_medio)[i]
         return h * suma
 
     else:
@@ -42,16 +42,16 @@ def intenumcomp(fun, a, b, N, regla):
 
 #implemento una funcion para conseguir minimizar el error hasta la cota dada
 
-def interr(fun,a,b,tol,real):
+def interr(fun,i,a,b,tol,real):
     N = 2
-    while abs(intenumcomp(fun,a,b,N,'simpson')-real) >= tol:
+    while abs(intenumcomp(fun,i,a,b,N,'simpson')-real) >= tol:
         N += 2
 
         if N ==1000:
             print('no se llego al minimo de la tolerancia')
             break
 
-    return N, intenumcomp(fun,a,b,N,'simpson')
+    return N, intenumcomp(fun,i,a,b,N,'simpson')
 
 #defino las funciones a integrar para el ajuste cuadratico por cuadrados minimos
 
@@ -68,30 +68,29 @@ def polinomios(x):
     return p
 
 def punto1():
-    f=funciones
+
     #defino los valores de las integrales
     inte=[]
     for i in range (2):
 
-        int = interr(f[i],0,np.pi/2,10e-5,1)[1]
+        int = interr(funciones,i,0,np.pi/2,10e-5,1)[1]
         inte.append(int)
         print(int)
 
-    int2 = interr(f[2],0,np.pi/2,10e-5,np.pi-2)[1]
+    int2 = interr(funciones,i,0,np.pi/2,10e-5,np.pi-2)[1]
     inte.append(int2)
     print(int2)
 
     # integrales de los polinomios
 
-    p=polinomios
     integrales=[]
 
     for i in range(4):
 
-        intpol= intenumcomp(p[i],0,np.pi/2,2,'simpson')
+        intpol= intenumcomp(polinomio,i,0,np.pi/2,2,'simpson')
         integrales.append(intpol)
 
-    intpol4 = interr(p[4],0,np.pi/2,10e-5,np.pi**5/(5*2**5))[1]
+    intpol4 = interr(polinomio,i,,0,np.pi/2,10e-5,np.pi**5/(5*2**5))[1]
     integrales.append(intpol4)
 
     print(integrales)
@@ -132,12 +131,12 @@ def punto2():
     return coeficientes
 
 def punto3():
-    fun=funciones
+    
 
     #defino los puntos equiespaciados y les atribuyo un valor en la funcion
     nodos = np.linspace(0,np.pi/2,5)
     print(nodos)
-    y = fun[0](nodos)
+    y = funciones(nodos)[0]
     print(y)
 
     #defino el spline cubico
@@ -184,10 +183,9 @@ def main():
             #llamo a los puntos anteriores para el desarrollo del grafico
             x = np.linspace(0,np.pi/2,50)
             pol=punto3
-            fun=funciones
             coef=punto2
             plt.plot(x,pol,'.r')
-            plt.plot(x,fun[0](x),'-g')
+            plt.plot(x,funciones(x)[0],'-g')
             plt.plot(x,aprox_cuadmin(x,coef),'.y')
 
 
