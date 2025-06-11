@@ -133,10 +133,8 @@ def punto3():
 
     #defino el spline cubico
     spline_3 = interp1d(nodos,y,'cubic')
-    x = np.linspace(0,np.pi/2,50)
-    pol = spline_3(x)
 
-    return pol
+    return spline_3
 
 
 #Menú principal para la ejecución del programa
@@ -162,23 +160,23 @@ def main():
 
         if punto==3:
 
-            pol=punto3()
+            spline_3=punto3()
+            x = np.linspace(0,np.pi/2,50)
+            pol = spline_3(x)
             print(pol)
 
         if punto==4:
 
             x = np.linspace(0,np.pi/2,50)
-            pol=punto3()
+            spline=punto3()
             coef=punto2()
 
-            plt.style.use('seaborn-v0_8')
             plt.title('Comparacion de las aproximaciones con la funcion original', fontsize=14, pad=20)
-            plt.xlabel('x', fontsize=12)
-            plt.ylabel('y', fontsize=12)
+    
 
             #llamo a los puntos anteriores para el desarrollo del grafico
             
-            plt.plot(x,pol,'.r')
+            plt.plot(x,spline(x),'.r')
             plt.plot(x,funciones(x)[0],'-g')
             plt.plot(x,aprox_cuadmin(x,coef),'.y')
             plt.show()
@@ -186,6 +184,8 @@ def main():
         if punto==0:
             break
 main()
+
+
 
 
 
