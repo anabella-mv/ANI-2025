@@ -67,7 +67,7 @@ def punto1():
         inte.append(inti)
         print(inti)
 
-    int2 = interr(funciones,i,0,np.pi/2,10e-5,np.pi-2)[1]
+    int2 = interr(funciones,2,0,np.pi/2,10e-5,np.pi-2)[1]
     inte.append(int2)
     print(int2)
 
@@ -80,7 +80,7 @@ def punto1():
         intpol= intenumcomp(polinomios,j,0,np.pi/2,2,'simpson')
         integrales.append(intpol)
 
-    intpol4 = interr(polinomios,j,0,np.pi/2,10e-5,np.pi**5/(5*2**5))[1]
+    intpol4 = interr(polinomios,4,0,np.pi/2,10e-5,np.pi**5/(5*2**5))[1]
     integrales.append(intpol4)
 
     print(integrales)
@@ -98,7 +98,7 @@ def solLU(A,B):
 #defino el polinomio cuadratico con los coeficientes
 def aprox_cuadmin(x,coeficientes):
 
-    cuadmin = coeficientes[0] + coeficientes[1]*x + coeficientes[2]*x**2
+    cuadmin = coeficientes[0] + coeficientes[1]*x + coeficientes[2]*(x**2)
 
     return cuadmin
 
@@ -127,7 +127,8 @@ def punto3():
     #defino los puntos equiespaciados y les atribuyo un valor en la funcion
     nodos = np.linspace(0,np.pi/2,5)
     print(nodos)
-    y = funciones(nodos)[0]
+    fnodos = funciones(nodos)
+    y=fnodos[0]
     print(y)
 
     #defino el spline cubico
@@ -143,7 +144,7 @@ def main():
     punto=1
     while punto!=0:
         print("Elija el ejercicio a desarrollar:")
-        print("Los puntos a ejecutar son 1, 2 y 3, el 0 es para terminar el programa")
+        print("Los puntos a ejecutar son 1, 2 , 3 y 4, el 0 es para terminar el programa")
         punto=int(input("Seleccione el punto a desarrollar: "))
 
         if punto==1:
@@ -166,21 +167,26 @@ def main():
 
         if punto==4:
 
+            x = np.linspace(0,np.pi/2,50)
+            pol=punto3()
+            coef=punto2()
+            fx=funciones(x)
+
             plt.style.use('seaborn-v0_8')
             plt.title('Comparacion de las aproximaciones con la funcion original', fontsize=14, pad=20)
             plt.xlabel('x', fontsize=12)
             plt.ylabel('y', fontsize=12)
 
             #llamo a los puntos anteriores para el desarrollo del grafico
-            x = np.linspace(0,np.pi/2,50)
-            pol=punto3()
-            coef=punto2()
+            
             plt.plot(x,pol,'.r')
-            plt.plot(x,funciones(x)[0],'-g')
+            plt.plot(x,fx[0],'-g')
             plt.plot(x,aprox_cuadmin(x,coef),'.y')
 
         if punto==0:
             break
 main()
+
+
 
 
