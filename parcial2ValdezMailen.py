@@ -170,7 +170,6 @@ def main():
             x = np.linspace(0,np.pi/2,50)
             pol=punto3()
             coef=punto2()
-            fx=funciones(x)
 
             plt.style.use('seaborn-v0_8')
             plt.title('Comparacion de las aproximaciones con la funcion original', fontsize=14, pad=20)
@@ -180,8 +179,9 @@ def main():
             #llamo a los puntos anteriores para el desarrollo del grafico
             
             plt.plot(x,pol,'.r')
-            plt.plot(x,fx[0],'-g')
+            plt.plot(x,funciones(x)[0],'-g')
             plt.plot(x,aprox_cuadmin(x,coef),'.y')
+            plt.show()
 
         if punto==0:
             break
