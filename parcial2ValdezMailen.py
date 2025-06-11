@@ -11,14 +11,8 @@ from scipy import linalg
 def intenumcomp(fun, i, a, b, N, regla):
     h = (b - a)/N
     vector_x = np.linspace(a, b, N+1)
-
-    if regla == "trapecio":
-        suma = fun(a)[i] + fun(b)[i]
-        for k in range(1, N):
-            suma += 2 * fun(vector_x[k])[i]
-        return (h/2) * suma
-
-    elif regla == "simpson":
+    
+    if regla == "simpson":
         if N % 2 != 0:
             raise ValueError("Para la regla de Simpson, N debe ser par")
         suma = fun(a)[i] + fun(b)[i]
@@ -29,15 +23,8 @@ def intenumcomp(fun, i, a, b, N, regla):
                 suma += 4 * fun(vector_x[k])[i]
         return (h/3) * suma
 
-    elif regla == "pm":
-        suma = 0
-        for k in range(N):
-            punto_medio = (vector_x[k] + vector_x[k+1]) / 2
-            suma += fun(punto_medio)[i]
-        return h * suma
-
     else:
-        raise ValueError(f"{regla} usar 'trapecio', 'simpson' o 'pm'")
+        raise ValueError(f"{regla} usar 'simpson'")
 
 
 #implemento una funcion para conseguir minimizar el error hasta la cota dada
@@ -76,9 +63,9 @@ def punto1():
     inte=[]
     for i in range (2):
 
-        int = interr(funciones,i,0,np.pi/2,10e-5,1)[1]
-        inte.append(int)
-        print(int)
+        inti = interr(funciones,i,0,np.pi/2,10e-5,1)[1]
+        inte.append(inti)
+        print(inti)
 
     int2 = interr(funciones,i,0,np.pi/2,10e-5,np.pi-2)[1]
     inte.append(int2)
@@ -88,12 +75,12 @@ def punto1():
 
     integrales=[]
 
-    for i in range(4):
+    for j in range(4):
 
-        intpol= intenumcomp(polinomios,i,0,np.pi/2,2,'simpson')
+        intpol= intenumcomp(polinomios,j,0,np.pi/2,2,'simpson')
         integrales.append(intpol)
 
-    intpol4 = interr(polinomios,i,0,np.pi/2,10e-5,np.pi**5/(5*2**5))[1]
+    intpol4 = interr(polinomios,j,0,np.pi/2,10e-5,np.pi**5/(5*2**5))[1]
     integrales.append(intpol4)
 
     print(integrales)
@@ -192,7 +179,8 @@ def main():
             plt.plot(x,funciones(x)[0],'-g')
             plt.plot(x,aprox_cuadmin(x,coef),'.y')
 
-
+        if punto==0:
+            break
 main()
 
 
